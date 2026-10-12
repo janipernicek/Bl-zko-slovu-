@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="cs">
+<!DOCTYPE html><html lang="cs">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,151 +6,115 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
 <title>Blízko Slovu</title>
-
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;padding:22px 16px 35px;
- font-family:Georgia,serif;color:#fff7e9;
- background:linear-gradient(160deg,#171022,#39234f,#20152d);
- min-height:100vh;text-align:center
-}
+body{margin:0;padding:22px 16px;background:linear-gradient(160deg,#171022,#39234f,#20152d);color:#fff7e9;font-family:Georgia,serif;text-align:center;min-height:100vh}
 main{max-width:430px;margin:auto}
-.logo{font-size:54px;margin:12px}
-h1{font-size:32px;font-weight:normal;letter-spacing:2px}
-.sub{color:#dfc9a0;font:13px Arial;letter-spacing:2px}
-.card{
- margin:24px 0;padding:25px 20px;
- border:1px solid #bca06b;border-radius:22px;
- background:#ffffff0b
-}
-.label{font:11px Arial;letter-spacing:2px;color:#d9bc7e}
-#verse{font-size:23px;line-height:1.55;margin:22px 0}
+.logo{font-size:48px;margin:10px}
+h1{font-weight:normal;letter-spacing:2px}
+.sub,.label{color:#dfc9a0;font:12px Arial;letter-spacing:2px}
+.card{margin:22px 0;padding:23px 18px;border:1px solid #bca06b;border-radius:20px;background:#ffffff09}
+#verse{font-size:22px;line-height:1.6;margin:22px 0}
 #ref{color:#e2c98f;font:14px Arial}
-button{
- width:100%;padding:15px;margin:6px 0;
- border:1px solid #c6a76b;border-radius:13px;
- background:#c6a76b;color:#241738;
- font-size:15px;cursor:pointer
-}
+button{width:100%;padding:14px;margin:6px 0;border:1px solid #c6a76b;border-radius:12px;background:#c6a76b;color:#241738;font-size:15px}
 .secondary{background:transparent;color:#fff7e9}
-textarea{
- width:100%;min-height:90px;padding:13px;
- border-radius:12px;border:1px solid #bca06b;
- background:#ffffff0b;color:white;font-size:15px
-}
-#reflection{line-height:1.7;margin-top:18px}
-footer{font:11px Arial;color:#c9b9d5;margin-top:35px}
+textarea{width:100%;height:90px;padding:12px;border-radius:10px;background:#ffffff0b;color:white;border:1px solid #bca06b}
+#out{line-height:1.7;margin-top:16px}
+footer{font:11px Arial;color:#c9b9d5;margin:30px 0}
 </style>
 </head>
-
-<body>
-<main>
+<body><main>
 <div class="logo">✧ 📖 ✧</div>
 <h1>BLÍZKO SLOVU</h1>
 <p class="sub">CHVÍLE S BOŽÍM SLOVEM</p>
-
 <section class="card">
 <div class="label" id="label">SLOVO PRO DNEŠNÍ DEN</div>
-<div id="verse">Načítám slovo...</div>
-<div id="ref"></div>
+<div id="verse"></div><div id="ref"></div>
 </section>
-
 <button onclick="daily()">📖 Slovo pro dnešní den</button>
-<button class="secondary" onclick="randomVerse()">✨ Otevři mi Bibli</button>
-<button class="secondary" onclick="saveVerse()">♡ Uložit mezi oblíbené</button>
-<button class="secondary" onclick="showSaved()">⭐ Moje oblíbené</button>
-
+<button class="secondary" onclick="randomV()">✨ Otevři mi Bibli</button>
+<button class="secondary" onclick="save()">♡ Uložit verš</button>
+<button class="secondary" onclick="saved()">⭐ Oblíbené verše</button>
 <section class="card">
 <div class="label">CO NOSÍŠ VE SVÉM SRDCI?</div>
-<p>Napiš, co tě trápí nebo nad čím přemýšlíš.</p>
+<p>Napiš, co tě trápí.</p>
 <textarea id="worry" placeholder="Dnes mě trápí..."></textarea>
 <button onclick="comfort()">🕊️ Najít slovo k zamyšlení</button>
-<div id="reflection"></div>
+<div id="out"></div>
 </section>
-
 <footer>Vytvořila Jana Pernicová ©2026</footer>
 </main>
-
 <script>
-const verses=[
+const V=[
 ["Hospodin jest můj pastýř, nebudu míti nedostatku.","Žalm 23,1","klid"],
-["Všecku péči svou uvrhouce na něj, neboť on pečuje o vás.","1. Petrův 5,7","starost"],
 ["Neboj se, neboť já s tebou jsem.","Izajáš 41,10","strach"],
-["Milovati budeš bližního svého jako sebe samého.","Matouš 22,39","láska"],
-["Pokoj vám zůstavuji, pokoj svůj dávám vám.","Jan 14,27","klid"],
+["Všecku péči svou uvrhouce na něj, neboť on pečuje o vás.","1. Petrův 5,7","starost"],
+["Pokoj svůj dávám vám.","Jan 14,27","klid"],
 ["Všecko mohu v Kristu, kterýž mne posiluje.","Filipským 4,13","síla"],
-["Proste, a budeť vám dáno; hledejte, a naleznete.","Matouš 7,7","rozhodnutí"],
+["Proste, a budeť vám dáno; hledejte, a naleznete.","Matouš 7,7","hledání"],
 ["Blízko jest Hospodin těm, kteříž jsou zkroušeného srdce.","Žalm 34,19","smutek"],
-["Neboť Bůh není Bohem zmatku, ale pokoje.","1. Korintským 14,33","chaos"],
-["V pokoji lehnu i spáti budu.","Žalm 4,9","spánek"],
+["Důvěřuj v Hospodina celým srdcem svým.","Přísloví 3,5","rozhodnutí"],
+["Všecko má uložený čas.","Kazatel 3,1","čas"],
 ["Láska dlouho trpělivá jest, dobrotivá jest.","1. Korintským 13,4","láska"],
 ["Uvrz na Hospodina břímě své, a onť tě opatří.","Žalm 55,23","starost"],
-["Důvěřuj v Hospodina celým srdcem svým.","Přísloví 3,5","rozhodnutí"],
+["Radujte se v naději, v soužení buďte trpěliví.","Římanům 12,12","naděje"],
 ["On uzdravuje ty, kteříž jsou zkroušeného srdce.","Žalm 147,3","smutek"],
-["Všecko má uložený čas.","Kazatel 3,1","čekání"],
-["Radujte se v naději, v soužení buďte trpěliví.","Římanům 12,12","naděje"]
+["V pokoji lehnu i spáti budu.","Žalm 4,9","spánek"],
+["Milovati budeš bližního svého jako sebe samého.","Matouš 22,39","láska"],
+["Neboť Bůh není Bohem zmatku, ale pokoje.","1. Korintským 14,33","klid"],
+["Hospodin jest světlo mé a spasení mé.","Žalm 27,1","strach"],
+["Buď silný a zmužilý, neboj se.","Jozue 1,9","síla"],
+["Odpovídej mírně, a odvrátíš hněv.","Přísloví 15,1","vztahy"],
+["Blahoslavení čistého srdce, nebo oni Boha viděti budou.","Matouš 5,8","víra"],
+["Pán jest blízko všem, kteříž ho vzývají.","Žalm 145,18","víra"],
+["Vlož na Hospodina cestu svou a doufej v něho.","Žalm 37,5","rozhodnutí"],
+["Milujte nepřátely své.","Matouš 5,44","vztahy"],
+["Pokoj Boží převyšuje všeliký rozum.","Filipským 4,7","klid"],
+["Vždycky se radujte.","1. Tesalonickým 5,16","radost"],
+["Modlete se bez přestání.","1. Tesalonickým 5,17","modlitba"],
+["Děkujte za všecko.","1. Tesalonickým 5,18","vděčnost"],
+["Láska nikdy nevypadá.","1. Korintským 13,8","láska"],
+["Bůh jest láska.","1. Janův 4,8","láska"],
+["Hospodin bojovati bude za vás, a vy mlčeti budete.","Exodus 14,14","strach"],
+["Pokořte se tedy pod mocnou ruku Boží.","1. Petrův 5,6","pokora"],
+["Hospodin tě požehnej a ostříhej tebe.","Numeri 6,24","požehnání"],
+["Ne samým chlebem živ bude člověk.","Matouš 4,4","víra"],
+["Já jsem s vámi po všecky dny.","Matouš 28,20","samota"],
+["Hledejte nejprve království Božího.","Matouš 6,33","priority"],
+["Nesuďte, abyste nebyli souzeni.","Matouš 7,1","vztahy"],
+["Blahoslavení pokojní, nebo oni synové Boží slouti budou.","Matouš 5,9","klid"],
+["Veselé srdce očerstvuje jako lékařství.","Přísloví 17,22","radost"],
+["Odpouštějte, a budeť vám odpuštěno.","Lukáš 6,37","odpuštění"],
+["Pojďte ke mně všickni, kteříž pracujete a obtíženi jste.","Matouš 11,28","únava"],
+["Milostí Boží jsem, což jsem.","1. Korintským 15,10","milost"],
+["Hospodin jest dobrý, útočiště v den soužení.","Nahum 1,7","starost"],
+["Spravedlivý z víry živ bude.","Římanům 1,17","víra"],
+["Naděje pak nezahanbuje.","Římanům 5,5","naděje"],
+["Přemáhej zlé dobrým.","Římanům 12,21","vztahy"],
+["Všecko čiňte bez reptání.","Filipským 2,14","trpělivost"],
+["Radujte se v Pánu vždycky.","Filipským 4,4","radost"],
+["Bůh nám nedal ducha bázně.","2. Timoteovi 1,7","strach"],
+["Buďte pak k sobě vespolek dobrotiví.","Efezským 4,32","vztahy"],
+["V naději buďte veselí.","Římanům 12,12","naděje"],
+["Hospodin jest milosrdný a milostivý.","Žalm 103,8","milost"],
+["Ztište se a vězte, že já jsem Bůh.","Žalm 46,11","klid"],
+["Tvé slovo jest svíce nohám mým.","Žalm 119,105","vedení"],
+["Věřím, pomoz nedověře mé.","Marek 9,24","víra"],
+["U Boha všecko možné jest.","Matouš 19,26","naděje"],
+["Kdo hledá, nalézá.","Matouš 7,8","hledání"],
+["Neboť kde jest poklad váš, tamť bude i srdce vaše.","Matouš 6,21","priority"],
+["Hospodin dá sílu lidu svému.","Žalm 29,11","síla"],
+["Pán jest můj pomocník, nebuduť se báti.","Židům 13,6","strach"],
+["Dobrořeč, duše má, Hospodinu.","Žalm 103,1","vděčnost"],
+["V milování není strachu.","1. Janův 4,18","láska"]
 ];
-
-let current=0;
-const $=id=>document.getElementById(id);
-
-function display(i,title){
- current=i;
- $("label").textContent=title;
- $("verse").textContent="„"+verses[i][0]+"“";
- $("ref").textContent=verses[i][1];
- $("reflection").textContent="";
-}
-
-function daily(){
- const d=new Date();
- const day=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);
- display(((day%verses.length)+verses.length)%verses.length,"SLOVO PRO DNEŠNÍ DEN");
-}
-function randomVerse(){
- let n;
- do{n=Math.floor(Math.random()*verses.length)}while(n===current);
- display(n,"OTEVŘI MI BIBLI");
-}
-function saveVerse(){
- let a=JSON.parse(localStorage.savedVerses||"[]");
- if(!a.includes(current))a.push(current);
- localStorage.savedVerses=JSON.stringify(a);
- $("reflection").textContent="Verš máš uložený mezi oblíbenými. ❤️";
-}
-function showSaved(){
- let a=JSON.parse(localStorage.savedVerses||"[]");
- $("reflection").innerHTML=a.length
- ?a.map(i=>`<p>„${verses[i][0]}“<br><small>${verses[i][1]}</small></p>`).join("")
- :"Zatím nemáš uložené žádné verše.";
-}
-function comfort(){
- let q=$("worry").value.toLowerCase();
- if(!q.trim()){
-  $("reflection").textContent="Zkus napsat, co právě prožíváš. ❤️";
-  return;
- }
- let words={
-  "strach":["strach","bojím","úzkost","obava"],
-  "starost":["trápí","starost","problém","těžké"],
-  "láska":["láska","samota","vztah","opuštěná"],
-  "síla":["nezvládám","sílu","vyčerpaná","unavená"],
-  "klid":["klid","stres","chaos","spěch"],
-  "smutek":["smutná","pláč","bolí","ztráta"],
-  "rozhodnutí":["rozhod","nevím","cesta","změna"],
-  "naděje":["naděj","budoucnost","vzdávám","zoufal"]
- };
- let category="klid";
- for(let c in words)
-  if(words[c].some(w=>q.includes(w))){category=c;break}
- let options=verses.map((v,i)=>({v,i})).filter(x=>x.v[2]===category);
- let pick=options[Math.floor(Math.random()*options.length)]||{v:verses[0],i:0};
- display(pick.i,"SLOVO K ZAMYŠLENÍ");
- $("reflection").textContent=
- "Zkus se u tohoto slova na chvíli zastavit. Co ti připomíná? Co si z něj můžeš odnést do dnešního dne? ❤️";
-}
+let cur=0;
+function show(i,t){cur=i;label.textContent=t;verse.textContent="„"+V[i][0]+"“";ref.textContent=V[i][1];out.textContent=""}
+function daily(){let d=new Date();let n=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000);show(((n%V.length)+V.length)%V.length,"SLOVO PRO DNEŠNÍ DEN")}
+function randomV(){let n;do{n=Math.floor(Math.random()*V.length)}while(n===cur);show(n,"OTEVŘI MI BIBLI")}
+function save(){let a=JSON.parse(localStorage.fav||"[]");if(!a.includes(cur))a.push(cur);localStorage.fav=JSON.stringify(a);out.textContent="Verš uložen mezi oblíbené ❤️"}
+function saved(){let a=JSON.parse(localStorage.fav||"[]");out.innerHTML=a.length?a.map(i=>"„"+V[i][0]+"“<br><small>"+V[i][1]+"</small><br>").join("<hr>"):"Zatím nemáš uložené verše."}
+function comfort(){let q=worry.value.toLowerCase();if(!q.trim()){out.textContent="Napiš, co nosíš v srdci. ❤️";return}let keys={"strach":["strach","bojím","obav","úzkost"],"starost":["trápí","starost","problém"],"láska":["láska","samota","vztah"],"síla":["nezvlád","vyčerpan","unaven"],"klid":["klid","stres","chaos"],"smutek":["smut","pláč","bolí"],"rozhodnutí":["rozhod","nevím","změna"],"naděje":["naděj","budoucnost","vzdávám"],"modlitba":["modlit","Bůh","víra"]};let c="klid";for(let k in keys)if(keys[k].some(w=>q.includes(w))){c=k;break}let a=V.map((v,i)=>({v,i})).filter(x=>x.v[2]===c);let p=a.length?a[Math.floor(Math.random()*a.length)]:{v:V[0],i:0};show(p.i,"SLOVO K ZAMYŠLENÍ");out.textContent="Zastav se na chvíli. Přečti si verš v jeho kontextu a přemýšlej, co ti připomíná. Náhodně vybraný text není automaticky Boží odpovědí na tvou otázku. ❤️"}
 daily();
 </script>
-</body>
-</html>
+</body></html>
