@@ -1,18 +1,18 @@
 {
-  "name": "Blízko Slovu",
-  "short_name": "Blízko Slovu",
-  "lang": "cs",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#20152d",
-  "theme_color": "#241738",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    }
-  ]
+"name": "Blízko Slovu",
+"short_name": "Blízko Slovu",
+"lang": "cs",
+"start_url": "./",
+"scope": "./",
+"display": "standalone",
+"background_color": "#241738",
+"theme_color": "#241738",
+"icons": [
+{
+"src": "./icon.svg",
+"sizes": "512x512",
+"type": "image/svg+xml",
+"purpose": "any"
+}
+]
 }
